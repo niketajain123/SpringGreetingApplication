@@ -57,4 +57,14 @@ public class GreetingService {
             throw new RuntimeException("Greeting with ID " + id + " not found");
         }
     }
+    // UC8: Delete a greeting by ID
+    public String deleteGreeting(Long id) {
+        Optional<Greeting> optionalGreeting = greetingRepository.findById(id);
+        if (optionalGreeting.isPresent()) {
+            greetingRepository.deleteById(id);
+            return "Greeting with ID " + id + " has been deleted successfully!";
+        } else {
+            throw new RuntimeException("Greeting with ID " + id + " not found");
+        }
+    }
 }
