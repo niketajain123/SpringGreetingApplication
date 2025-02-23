@@ -1,9 +1,12 @@
 package com.example.SpringGreetingApplication.controller;
+import com.example.SpringGreetingApplication.model.Greeting;
 import com.example.SpringGreetingApplication.service.GreetingService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("/greeting")
@@ -27,5 +30,20 @@ public class GreetingController {
     public String getPersonalizedGreeting(@RequestParam(required = false) String firstName,
                               @RequestParam(required = false) String lastName) {
         return "{\"message\": \"" + greetingService.getGreetingMessage(firstName, lastName) + "\"}";
+    }
+    @PostMapping
+    public ResponseEntity<?> greet(@RequestParam(required = false) String firstName,
+                                   @RequestParam(required = false) String lastName) {
+        try {
+            Greeting greeting = greetingService.saveGreeting(firstName, lastName);
+            return ResponseEntity.ok(greeting);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "Something went wrong! " + e.getMessage()));
+        }
+    }
+    @GetMapping("/all")
+    public List<Greeting> getAllGreetings() {
+        return greetingService.getAllGreetings();
     }
 }
