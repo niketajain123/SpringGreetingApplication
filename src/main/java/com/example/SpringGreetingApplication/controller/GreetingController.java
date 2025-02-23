@@ -53,4 +53,9 @@ public class GreetingController {
         return greeting.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @GetMapping
+    public ResponseEntity<List<Greeting>> getAllGreetingsAsEntities() {
+        List<Greeting> greetings = greetingService.getAllGreetings();
+        return ResponseEntity.ok(greetings);  //
+    }
 }
