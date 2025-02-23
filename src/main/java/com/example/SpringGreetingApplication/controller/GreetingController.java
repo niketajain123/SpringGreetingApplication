@@ -58,4 +58,9 @@ public class GreetingController {
         List<Greeting> greetings = greetingService.getAllGreetings();
         return ResponseEntity.ok(greetings);  //
     }
+    // UC7: Update a Greeting Message by ID
+    @PutMapping("/update/{id}")
+    public Greeting updateGreeting(@PathVariable Long id, @RequestParam String message) {
+        return greetingService.updateGreeting(id, message);
+    }
 }
